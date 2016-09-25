@@ -13,6 +13,7 @@ echo -e "\e[31;43;1m Sqlite install success \e[0m "
 
 # MySQL
 apt-get -yq install mysql-server mysql-client libmysqlclient-dev
+mysql -u root -e "update mysql.user set plugin='mysql_native_password' WHERE User='root'; FLUSH PRIVILEGES;"
 echo -e "\e[31;43;1m MySQL install success \e[0m "
 
 # PostgreSQL
