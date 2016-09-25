@@ -3,6 +3,10 @@
 # initialize
 export DEBIAN_FRONTEND=noninteractive
 
+# NodeJS
+apt-get install nodejs nodejs-dev
+echo -e "\e[31;43;1m NodeJS install success \e[0m "
+
 # Sqlite
 apt-get -yq install sqlite3 libsqlite3-dev
 echo -e "\e[31;43;1m Sqlite install success \e[0m "
@@ -30,7 +34,3 @@ echo -e "\e[31;43;1m Redis install success \e[0m "
 # RabbitMQ
 apt-get -yq install rabbitmq-server
 echo -e "\e[31;43;1m RabbitMQ install success \e[0m "
-
-# Dnsmasq
-apt-get -yq install dnsmasq
-echo -e "\e[31;43;1m Dnsmasq install success \e[0m "
