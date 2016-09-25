@@ -4,7 +4,7 @@
 export DEBIAN_FRONTEND=noninteractive
 
 # NodeJS
-apt-get install nodejs nodejs-dev
+apt-get -yq install nodejs nodejs-dev
 echo -e "\e[31;43;1m NodeJS install success \e[0m "
 
 # Sqlite
