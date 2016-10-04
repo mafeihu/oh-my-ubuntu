@@ -1,10 +1,13 @@
 #!/bin/bash
 
 # initialize
-RUBY_VERSION=2.3.1
-GEM_SOURCES=https://gems.ruby-china.org/
-export RUBY_BUILD_MIRROR_URL=https://ruby.taobao.org/mirrors/ruby/ruby-$RUBY_VERSION.tar.bz2#
+GEM_SOURCES_CHINA=https://gems.ruby-china.org/
+GEM_SOURCES_ORIGIN=https://gems.ruby-china.org/
+export RUBY_BUILD_MIRROR_URL=http://oeijhg095.bkt.clouddn.com
 export RUBY_CONFIGURE_OPTS="--disable-install-doc"
+
+echo -n "please input version: "
+read ruby_version
 
 # Rbenv
 apt-get -yq install autoconf bison build-essential libssl-dev libyaml-dev \
@@ -14,26 +17,38 @@ git clone https://github.com/sstephenson/rbenv.git /usr/local/rbenv
 git clone https://github.com/sstephenson/ruby-build.git \
           /usr/local/rbenv/plugins/ruby-build
 
-echo '# rbenv setup' >> /etc/profile.d/rbenv.sh
-echo 'export RBENV_ROOT=/usr/local/rbenv'  >> /etc/profile.d/rbenv.sh
-echo 'export PATH="$RBENV_ROOT/bin:$PATH"' >> /etc/profile.d/rbenv.sh
-echo 'eval "$(rbenv init -)"' >> /etc/profile.d/rbenv.sh
+
+# Rbenv profile
+tee /etc/profile.d/rbenv.sh << EOD
+# rbenv setup
+export RBENV_ROOT=/usr/local/rbenv
+export PATH="\$RBENV_ROOT/bin:\$PATH"
+eval "\$(rbenv init -)"
+EOD
 source /etc/profile.d/rbenv.sh
 echo -e "\e[31;43;1m Rbenv install success \e[0m "
 
 
 # Ruby
-rbenv install $RUBY_VERSION
-rbenv global $RUBY_VERSION
-rbenv shell $RUBY_VERSION
-rbenv rehash
+rbenv install -kvs $ruby_version
+rbenv global $ruby_version
+rbenv shell $ruby_version
 echo -e "\e[31;43;1m Ruby install success \e[0m "
 
-# Rails
-gem sources --add $GEM_SOURCES --remove https://rubygems.org/ -V
-echo 'gem: --no-document' >> ~/.gemrc
+# Gem
+CHECK_GEM_SOURCES=$(gem sources | grep $GEM_SOURCES_CHINA | wc -l)
+if [ ! $CHECK_GEM_SOURCES -ge 1 ]; then
+  gem sources --add $GEM_SOURCES_CHINA --remove $GEM_SOURCES_ORIGIN
+  echo 'gem: --no-document' | tee -a ~/.gemrc
+fi
+
+# bundler
+gem install bundler
+bundle config mirror.${GEM_SOURCES_ORIGIN%/} ${GEM_SOURCES_CHINA%/}
+
+# framework
 gem install rails
-echo -e "\e[31;43;1m $(rails -v) install success \e[0m "
+gem install sinatra
 
 # Fix Permissions
 chgrp -R adm /usr/local/rbenv
