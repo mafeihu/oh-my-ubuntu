@@ -25,7 +25,7 @@ checkout "${GITHUB}/sstephenson/ruby-build.git"       "${RBENV_ROOT}/plugins/rub
 
 # Rbenv profile
 tee /etc/profile.d/rbenv.sh << EOD
-# rbenv setup
+# Load rbenv automatically
 export RBENV_ROOT=$RBENV_ROOT
 export PATH="\$RBENV_ROOT/bin:\$PATH"
 eval "\$(rbenv init -)"
@@ -54,12 +54,12 @@ gem install rails
 gem install sinatra
 
 # Fix Permissions
-chgrp -R adm /usr/local/rbenv
-chmod -R g+rwx /usr/local/rbenv
+chgrp -R adm $RBENV_ROOT
+chmod -R g+rwx $RBENV_ROOT
 
 # Vagrant
 if [ -d /home/vagrant ]; then
-  usermod -a -G staff adm
+  usermod -a -G adm vagrant
   su - vagrant -c "gem sources --add $GEM_SOURCES_CHINA --remove $GEM_SOURCES_ORIGIN -v"
   su - vagrant -c "echo 'gem: --no-document' | tee -a ~/.gemrc"
   su - vagrant -c "bundle config mirror.${GEM_SOURCES_ORIGIN%/} ${GEM_SOURCES_CHINA%/}"
