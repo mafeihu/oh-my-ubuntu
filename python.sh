@@ -55,6 +55,9 @@ mkdir ~/.pip
 cp /tmp/pip.conf ~/.pip/pip.conf
 pip install --upgrade pip
 
+# Framework
+pip install django
+
 
 # Vagrant
 if [ -d /home/vagrant ]; then
