@@ -1,13 +1,11 @@
 #!/bin/bash
 
 # initialize
+RUBY_VERSION=2.3.1
 GEM_SOURCES_CHINA=https://gems.ruby-china.org/
-GEM_SOURCES_ORIGIN=https://gems.ruby-china.org/
+GEM_SOURCES_ORIGIN=https://rubygems.org/
 export RUBY_BUILD_MIRROR_URL=http://oeijhg095.bkt.clouddn.com
 export RUBY_CONFIGURE_OPTS="--disable-install-doc"
-
-echo -n "please input version: "
-read ruby_version
 
 # Rbenv
 apt-get -yq install autoconf bison build-essential libssl-dev libyaml-dev \
@@ -30,17 +28,16 @@ echo -e "\e[31;43;1m Rbenv install success \e[0m "
 
 
 # Ruby
-rbenv install -kvs $ruby_version
-rbenv global $ruby_version
-rbenv shell $ruby_version
+rbenv install -kvs $RUBY_VERSION
+rbenv global $RUBY_VERSION
+rbenv shell $RUBY_VERSION
+rbenv rehash
 echo -e "\e[31;43;1m Ruby install success \e[0m "
 
 # Gem
-CHECK_GEM_SOURCES=$(gem sources | grep $GEM_SOURCES_CHINA | wc -l)
-if [ ! $CHECK_GEM_SOURCES -ge 1 ]; then
-  gem sources --add $GEM_SOURCES_CHINA --remove $GEM_SOURCES_ORIGIN
-  echo 'gem: --no-document' | tee -a ~/.gemrc
-fi
+gem sources --add $GEM_SOURCES_CHINA --remove $GEM_SOURCES_ORIGIN -v
+echo 'gem: --no-document' | tee -a ~/.gemrc
+
 
 # bundler
 gem install bundler
@@ -53,3 +50,18 @@ gem install sinatra
 # Fix Permissions
 chgrp -R adm /usr/local/rbenv
 chmod -R g+rwx /usr/local/rbenv
+
+# Vagrant
+if [ -d /home/vagrant ]; then
+  usermod -a -G staff adm
+  su - vagrant -c "gem sources --add $GEM_SOURCES_CHINA --remove $GEM_SOURCES_ORIGIN -v"
+  su - vagrant -c "echo 'gem: --no-document' | tee -a ~/.gemrc"
+  su - vagrant -c "bundle config mirror.${GEM_SOURCES_ORIGIN%/} ${GEM_SOURCES_CHINA%/}"
+fi
+
+# Tips
+echo '--------------Config Local User-----------------------------'
+echo "gem sources --add $GEM_SOURCES_CHINA --remove $GEM_SOURCES_ORIGIN -v"
+echo "echo 'gem: --no-document' | tee -a ~/.gemrc"
+echo "bundle config mirror.${GEM_SOURCES_ORIGIN%/} ${GEM_SOURCES_CHINA%/}"
+echo '------------------------------------------------------------'
