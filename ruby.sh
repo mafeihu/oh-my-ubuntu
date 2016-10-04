@@ -1,5 +1,11 @@
 #!/bin/bash
 
+# GitHub
+GITHUB="https://github.com"
+checkout() {
+  [ -d "$2" ] || git clone --depth 1 "$1" "$2"
+}
+
 # initialize
 RUBY_VERSION=2.3.1
 RBENV_ROOT=/usr/local/rbenv
@@ -8,14 +14,14 @@ GEM_SOURCES_ORIGIN=https://rubygems.org/
 export RUBY_BUILD_MIRROR_URL=http://oeijhg095.bkt.clouddn.com
 export RUBY_CONFIGURE_OPTS="--disable-install-doc"
 
+
 # Rbenv
 apt-get -yq install autoconf bison build-essential libssl-dev libyaml-dev \
                     libreadline6-dev zlib1g-dev libncurses5-dev libffi-dev \
                     libgdbm3 libgdbm-dev
-git clone https://github.com/sstephenson/rbenv.git $RBENV_ROOT
-git clone https://github.com/sstephenson/ruby-build.git \
-          $RBENV_ROOT/plugins/ruby-build
 
+checkout "${GITHUB}/sstephenson/rbenv.git"            "${RBENV_ROOT}"
+checkout "${GITHUB}/sstephenson/ruby-build.git"       "${RBENV_ROOT}/plugins/ruby-build"
 
 # Rbenv profile
 tee /etc/profile.d/rbenv.sh << EOD
