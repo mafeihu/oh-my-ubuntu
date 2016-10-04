@@ -2,6 +2,7 @@
 
 # initialize
 RUBY_VERSION=2.3.1
+RBENV_ROOT=/usr/local/rbenv
 GEM_SOURCES_CHINA=https://gems.ruby-china.org/
 GEM_SOURCES_ORIGIN=https://rubygems.org/
 export RUBY_BUILD_MIRROR_URL=http://oeijhg095.bkt.clouddn.com
@@ -11,15 +12,15 @@ export RUBY_CONFIGURE_OPTS="--disable-install-doc"
 apt-get -yq install autoconf bison build-essential libssl-dev libyaml-dev \
                     libreadline6-dev zlib1g-dev libncurses5-dev libffi-dev \
                     libgdbm3 libgdbm-dev
-git clone https://github.com/sstephenson/rbenv.git /usr/local/rbenv
+git clone https://github.com/sstephenson/rbenv.git $RBENV_ROOT
 git clone https://github.com/sstephenson/ruby-build.git \
-          /usr/local/rbenv/plugins/ruby-build
+          $RBENV_ROOT/plugins/ruby-build
 
 
 # Rbenv profile
 tee /etc/profile.d/rbenv.sh << EOD
 # rbenv setup
-export RBENV_ROOT=/usr/local/rbenv
+export RBENV_ROOT=$RBENV_ROOT
 export PATH="\$RBENV_ROOT/bin:\$PATH"
 eval "\$(rbenv init -)"
 EOD
@@ -37,7 +38,6 @@ echo -e "\e[31;43;1m Ruby install success \e[0m "
 # Gem
 gem sources --add $GEM_SOURCES_CHINA --remove $GEM_SOURCES_ORIGIN -v
 echo 'gem: --no-document' | tee -a ~/.gemrc
-
 
 # bundler
 gem install bundler
