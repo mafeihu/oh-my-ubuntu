@@ -21,6 +21,6 @@
 
 	# 安装 Git
 	sudo apt-get update
-	sudo apt-get -yq install  language-pack-zh-hans git-core tig
+	sudo apt-get -yq install  language-pack-zh-hans git-core tig exfat-fuse
 
 * VirtualBox
