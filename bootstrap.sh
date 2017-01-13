@@ -17,8 +17,7 @@ deb-src http://cn.archive.ubuntu.com/ubuntu/ xenial-security main multiverse res
 deb-src http://cn.archive.ubuntu.com/ubuntu/ xenial-updates main multiverse restricted universe
 EOD
 
-apt-get update
-apt-get -yq install  language-pack-zh-hans git-core
+apt-get update && apt-get -yq install  language-pack-zh-hans git-core
 
 
 # Git
