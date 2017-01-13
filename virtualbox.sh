@@ -14,5 +14,5 @@ apt-get update &&  apt-get install -yq virtualbox-5.1
 version=`echo $(VBoxManage -v) | awk '{split($0, version, "r"); print version[1]}'`
 release=`echo $(VBoxManage -v) | awk '{split($0, version, "r"); print version[2]}'`
 extpack=Oracle_VM_VirtualBox_Extension_Pack-$version-$release.vbox-extpack
-curl -o /tmp/$extpack http://download.virtualbox.org/virtualbox/$version/$extpack
+curl -o /tmp/$extpack https://mirrors.tuna.tsinghua.edu.cn/virtualbox/$version/$extpack
 VBoxManage extpack install --replace /tmp/$extpack
