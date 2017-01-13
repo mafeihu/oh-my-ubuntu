@@ -6,7 +6,7 @@
 	sudo cp /etc/apt/sources.list{,.default}
 
 	# 修改安装源
-	sudo tee /etc/apt/sources.list < EOD
+	sudo tee /etc/apt/sources.list << EOD
 	deb http://cn.archive.ubuntu.com/ubuntu/ xenial main multiverse restricted universe
 	deb http://cn.archive.ubuntu.com/ubuntu/ xenial-backports main multiverse restricted universe
 	deb http://cn.archive.ubuntu.com/ubuntu/ xenial-proposed main multiverse restricted universe
