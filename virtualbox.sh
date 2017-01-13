@@ -6,7 +6,7 @@
 wget -q https://www.virtualbox.org/download/oracle_vbox_2016.asc -O- | \
       apt-key add -
 echo  "deb https://mirrors.tuna.tsinghua.edu.cn/virtualbox/apt/ xenial contrib" | \
-      tee -a /etc/apt/sources.list.d/virtualbox.list
+      tee /etc/apt/sources.list.d/virtualbox.list
 apt-get update &&  apt-get install -yq virtualbox-5.1
 
 
