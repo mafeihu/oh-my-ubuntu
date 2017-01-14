@@ -16,7 +16,7 @@ sudo apt-get install apt-transport-https ca-certificates \
 
 sudo tee /etc/docker/daemon.json << EOD
 {
-  "registry-mirror": ["https://ep1dz7wh.mirror.aliyuncs.com"]
+  "registry-mirrors": ["https://ep1dz7wh.mirror.aliyuncs.com"]
 }
 EOD
 
